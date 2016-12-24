@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  
+  vars:
+    hostname: todo
+  
+  roles:
+    - digitalocean-common
+
+- hosts: todo
+  roles:
+    - ubuntu-common

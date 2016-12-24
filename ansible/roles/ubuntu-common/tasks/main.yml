@@ -1,0 +1,43 @@
+- name: dev locale
+  action: command update-locale LC_ALL=en_US.UTF-8
+  
+- name: set default locale
+  lineinfile: dest=/etc/default/locale
+    regexp="LC_ALL"
+    line="LC_ALL=\"en_US.UTF-8\""
+    
+- name: Make sure we have a 'wheel' group
+  group:
+    name: wheel
+    state: present
+    
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+
+- name: use local user as username
+  local_action: command whoami
+  register: whoami
+  when: sudo_user == ''
+  
+- name: "set sudo user to {{ whoami.stdout }}"
+  set_fact:
+    sudo_user: "{{ whoami.stdout }}"
+  when: sudo_user == ''
+    
+- name: Add sudoers users to wheel group
+  user:
+    name: "{{ sudo_user }}"
+    groups: wheel
+    shell: /bin/bash
+    append: yes
+    state: present
+    createhome: yes
+  
+- name: Set up authorized keys for the user
+  authorized_key: user="{{ sudo_user }}" key="{{ item }}"
+  with_file:
+    - "{{ ssh_key_file }}"

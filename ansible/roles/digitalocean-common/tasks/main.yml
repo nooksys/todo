@@ -1,0 +1,36 @@
+---
+- name: ensure ssh key exists
+  user: >
+    name={{ ansible_user_id }}
+    generate_ssh_key=yes
+    ssh_key_file=.ssh/id_rsa
+
+- name: ensure key exists at DigitalOcean
+  digital_ocean: >
+    state=present
+    command=ssh
+    name=Vagrant
+    ssh_pub_key={{ lookup('file', '~/.ssh/id_rsa.pub') }}
+  register: my_ssh_key
+  
+- name: ensure droplet exists
+  digital_ocean: >
+    state=active
+    command=droplet
+    name={{ hostname }}
+    unique_name=yes
+    private_networking=yes
+    size_id={{ size }}
+    region_id=sgp1
+    image_id={{ image }}
+    ssh_key_ids={{ my_ssh_key.ssh_key.id }}
+  register: droplet
+
+- debug: msg="IP is {{ droplet.droplet.ip_address }}"
+- add_host:
+    name: "{{ droplet.droplet.ip_address }}"
+    groups: "{{ hostname }}"
+    ansible_user: root
+    
+- pause:
+    seconds: 5
