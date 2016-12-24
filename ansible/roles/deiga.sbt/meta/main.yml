@@ -1,0 +1,27 @@
+galaxy_info:
+  author: deiga
+  description: SBT for Linux
+  license: license (BSD, MIT)
+
+  min_ansible_version: 1.2
+
+  platforms:
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - sbt
+    - system
+    - scala
+
+dependencies: []

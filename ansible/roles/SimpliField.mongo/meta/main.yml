@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Sébastien Elet
+  description: MongoDb Server
+  company: SimpliField
+  issue_tracker_url: https://github.com/SimpliField/ansible-mongo/issues
+  license: BSD
+  min_ansible_version: 2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+    - utopic
+    - vivid
+    - wily
+    - xenial
+
+  galaxy_tags:
+    - mongo
+    - db
+
+dependencies:
+- SimpliField.transparent-huge-pages

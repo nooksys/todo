@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  roles:
+   - { role: jpnewman.java, tags: ["init"] }
+   - { role: SimpliField.mongo, mongodb_version: 3.2, mongo_replication_set: !!null } # install mongodb
+   - { role: deiga.sbt } # install sbt

@@ -116,7 +116,19 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
           "detail" -> ""))).get
       status(result) mustBe BAD_REQUEST
       val response = contentAsJson(result)
-      // test error message must be return
+      // test error message must exists
+      (response \ "error" \ "subject").toOption.isDefined mustBe true
+      (response \ "error" \ "detail").toOption.isDefined mustBe true
+    }
+    
+    "reject update with empty subject or detail" in withSetup() {
+      val result = route(app, FakeRequest(PUT, "/api/tasks/fakeId")
+        .withJsonBody(Json.obj(
+          "subject" -> "",
+          "detail" -> ""))).get
+      status(result) mustBe BAD_REQUEST
+      val response = contentAsJson(result)
+      // test error message must exists
       (response \ "error" \ "subject").toOption.isDefined mustBe true
       (response \ "error" \ "detail").toOption.isDefined mustBe true
     }
