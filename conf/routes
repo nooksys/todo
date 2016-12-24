@@ -1,0 +1,5 @@
+GET      /api/tasks/:id   controllers.TaskController.get(id)
+GET      /api/tasks       controllers.TaskController.list(pageNo: Int ?= 1, pageSize: Int ?= 10)
+POST     /api/tasks       controllers.TaskController.save
+PUT      /api/tasks/:id   controllers.TaskController.update(id)
+DELETE   /api/tasks/:id   controllers.TaskController.delete(id)
