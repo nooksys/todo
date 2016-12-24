@@ -37,8 +37,8 @@ Any validation error will return 400 Bad request with Messages as Example
 ```json
 {
 	"error" : {
-		"subject" : ["This field is required", ...],
-		"detail" : ["This field is required", ...],
+		"subject" : ["This field is required"],
+		"detail" : ["This field is required"]
 	}
 }
 ```
@@ -62,9 +62,7 @@ Response Example:
 	"pageSize": 10,
 	"totalRecords": 100,
 	"items": [
-		{id:"id", subject:"subject", detail:"detail", "isDone": false },
-		..
-		..
+		{"id": "id", "subject": "subject", "detail": "detail", "isDone": false }
 	]
 }
 ```
