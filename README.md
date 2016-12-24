@@ -9,25 +9,32 @@ Platform: Ubuntu 14.04
 require user to be a passwordless sudoers user
 
 ### install ansible
+```
 $ sudo apt-get install software-properties-common
 $ sudo apt-add-repository ppa:ansible/ansible
 $ sudo apt-get update
 $ sudo apt-get install ansible
+```
 
 ### install application on localhost
+```
 $ cd [ROOT_PROJECT]/ansible
 $ sudo ansible-playbook main.yml
+```
 
 ### run test cases 
 for first run it will download all dependencies a bit longer please waiting
-
+```
 $ cd [ROOT_PROJECT]
 $ sbt -v compile
 $ sbt test
+```
 
 ### run application
+```
 $ cd [ROOT_PROJECT]
 $ sbt run
+```
 
 application listen on 0.0.0.0:9000
 
