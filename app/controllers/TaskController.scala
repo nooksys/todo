@@ -67,10 +67,12 @@ class TaskController @Inject() (taskDao: TaskDao)(implicit val messagesApi: Mess
   }
 
   def list(pageNo: Int, pageSize: Int) = Action.async {
-    val page = if (pageNo > 0) pageNo else 1
-    val limit = if (pageSize > 0) pageSize else 10
-    val offset = (page - 1) * limit
-    taskDao.findAll(limit, offset).map(items => Ok(Json.obj("pageNo" -> page, "pageSize" -> limit, "items" -> items)))
+    taskDao.count.flatMap { count =>
+      val page = if (pageNo > 0) pageNo else 1
+      val limit = if (pageSize > 0) pageSize else 10
+      val offset = (page - 1) * limit
+      taskDao.findAll(limit, offset).map(items => Ok(Json.obj("pageNo" -> page, "pageSize" -> limit, "totalRecords" -> count, "items" -> items)))
+    }
   }
 
   def errorResponse(errors: JsValue) = BadRequest(Json.obj("error" -> errors))

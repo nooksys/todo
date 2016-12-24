@@ -99,12 +99,14 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
 
     "list success" in withSetup {
       when(taskDao.findAll(anyInt, anyInt)).thenReturn(Future.successful(returnItems))
+      when(taskDao.count).thenReturn(Future.successful(100))
     } {
       val result = route(app, FakeRequest(GET, "/api/tasks")).get
       status(result) mustBe OK
       val response = contentAsJson(result)
       (response \ "pageNo").validate[Int] mustBe JsSuccess(1) // default pageNo is 1
       (response \ "pageSize").validate[Int] mustBe JsSuccess(10) // default pageSize is 10
+      (response \ "totalRecords").validate[Int] mustBe JsSuccess(100)
       (response \ "items").validate[List[Task]] mustBe JsSuccess(returnItems) // check return items
     }
 
