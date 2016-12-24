@@ -49,7 +49,7 @@ Any specified Task'id operations (update and delete) will return 404 Not found w
 GET /api/tasks/:id	 
 Response Example:
 ```json
-{"id" :"id", "subject":"subject", "detail":"detail", "isDone":"true|false"}
+{"id" :"id", "subject":"subject", "detail":"detail", "isDone":false}
 ```
 
 ###  Get pagination result of tasks
@@ -62,7 +62,7 @@ Response Example:
 	"pageSize": 10,
 	"totalRecords": 100,
 	"items": [
-		{"id":"id", "subject":"subject", "detail":"detail", "isDone": false },
+		{id:"id", subject:"subject", detail:"detail", "isDone": false },
 		..
 		..
 	]
