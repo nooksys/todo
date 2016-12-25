@@ -7,5 +7,9 @@ import scala.util.Random
 
 object TaskHelper {
 
-  def createRandomTask = Task(UUID.randomUUID().toString, RandomStringUtils.randomAlphanumeric(10), RandomStringUtils.randomAlphanumeric(100), Random.nextBoolean())
+  def createRandomTask = Task(
+    UUID.randomUUID().toString,
+    LoremIpsum.words(10),
+    LoremIpsum.paragraphs(5),
+    Random.nextBoolean())
 }

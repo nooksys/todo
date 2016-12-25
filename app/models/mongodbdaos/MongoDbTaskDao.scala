@@ -13,6 +13,8 @@ import reactivemongo.api.QueryOpts
 import reactivemongo.api.Cursor
 import javax.inject.Inject
 import javax.inject.{ Inject, Singleton }
+import scala.concurrent.Future
+import play.Logger
 
 @Singleton
 class MongoDbTaskDao @Inject() (mongoApi: ReactiveMongoApi) extends TaskDao {
@@ -45,5 +47,9 @@ class MongoDbTaskDao @Inject() (mongoApi: ReactiveMongoApi) extends TaskDao {
 
   def findAll(limit: Int, offset: Int) = collectionFuture.flatMap { col =>
     col.find(Json.obj()).options(QueryOpts().skip(offset)).cursor[Task]().collect[List](limit, err = Cursor.FailOnError[List[Task]]())
+  }
+
+  def bulkInsert(data: List[Task]) = collectionFuture.flatMap { col =>
+    col.bulkInsert(false)(data.map(implicitly[col.ImplicitlyDocumentProducer](_)): _*).map(_ => ())
   }
 }

@@ -1,0 +1,27 @@
+<p-confirmDialog></p-confirmDialog>
+<p-dataList [value]="tasks" [rowsPerPageOptions]="[10, 15, 20]" [paginatorPosition]="both" [paginator]="true" [rows]="9"
+    [lazy]="true" (onLazyLoad)="onLazyLoad($event)" [totalRecords]="totalRecords">
+    <header>
+            <div class="ui-helper-clearfix">
+                <div style="float: right">
+                    <button pButton type="text" icon="fa-plus" label="New"></button>
+                </div>
+                <span>List of Task</span>
+            </div>
+    </header>
+    <template let-task>
+        <div class="ui-g" style="padding:1ex;border-bottom:0.3ex solid #D5D5D5;">
+            <div class="ui-g-12">{{task.subject}}</div>
+            <div class="ui-g-2">
+                <p><strong>status:</strong> {{task.isDone ? 'done' : 'pending'}}</p>
+            </div>
+            <div class="ui-g-10">
+                <p>
+                    <a href="javascript:void(0)"><i class="fa fa-search"></i></a> &nbsp;
+                    <a href="javascript:void(0)"><i class="fa fa-pencil"></i></a> &nbsp;
+                    <a href="javascript:void(0)" (click)="confirmDelete(task.id)"><i class="fa fa-trash"></i></a>
+                </p>
+            </div>
+        </div>
+    </template>
+</p-dataList>

@@ -1,0 +1,17 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g">
+  <div class="ui-g-12">
+    <h1>{{task.subject}}</h1>
+  </div>
+  <div class="ui-g-12">
+    <div [innerHTML]="task.detail"></div>
+  </div>
+  <div class="ui-g-12">
+    <h3>Status: {{ task.isDone ? 'done' : 'pending' }}</h3>
+  </div>
+  <div class="ui-g-12">
+    <button pButton (click)="edit()" type="button" icon="fa-pencil" label="Edit"></button>
+    <button pButton (click)="confirmDelete()" type="button" icon="fa-trash" label="Delete"></button>
+    <button pButton (click)="list()" type="button" icon="fa-list" label="List"></button>
+  </div>
+</div>

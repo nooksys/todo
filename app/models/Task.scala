@@ -30,4 +30,6 @@ trait TaskDao {
   def delete(id: String): Future[Boolean]
 
   def count: Future[Int]
+
+  def bulkInsert(data: List[Task]): Future[Unit]
 }

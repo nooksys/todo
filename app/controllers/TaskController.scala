@@ -16,14 +16,15 @@ import models._
 
 object TaskController {
 
-  case class TaskData(subject: String, detail: String)
+  case class TaskData(subject: String, detail: String, isDone:Option[Boolean])
 
   implicit val taskDataFormat = Json.format[TaskData]
 
   val taskForm = Form(
     mapping(
-      "subject" -> nonEmptyText(maxLength = 50),
-      "detail" -> nonEmptyText(maxLength = 255))(TaskData.apply)(TaskData.unapply))
+      "subject" -> nonEmptyText,
+      "detail" -> nonEmptyText,
+      "isDone" -> optional(boolean))(TaskData.apply)(TaskData.unapply))
 }
 
 @Singleton
@@ -31,6 +32,9 @@ class TaskController @Inject() (taskDao: TaskDao)(implicit val messagesApi: Mess
 
   import TaskController._
 
+  /**
+   * @return example { "id": "test", "subject": "test", "isDone": false }
+   */
   def get(id: String) = Action.async {
     taskDao.find(id).map {
       case Some(task) => Ok(Json.toJson(task))
@@ -39,7 +43,7 @@ class TaskController @Inject() (taskDao: TaskDao)(implicit val messagesApi: Mess
   }
 
   /**
-   * @return { "id": "new generated id" } or { "error" { "{fieldName}": [mesages...] } }
+   * @return example { "id": "new generated id" } or { "error" { "{fieldName}": [mesages...] } }
    */
   def save = Action.async(parse.tolerantJson) { implicit request =>
     taskForm.bindFromRequest().fold(
@@ -50,15 +54,21 @@ class TaskController @Inject() (taskDao: TaskDao)(implicit val messagesApi: Mess
       })
   }
 
+  /**
+   * @return NotFound with unavailable task
+   */
   def update(id: String) = Action.async(parse.tolerantJson) { implicit request =>
     taskForm.bindFromRequest().fold(
       formWithErrors => Future.successful(errorResponse(formWithErrors.errorsAsJson)),
-      data => taskDao.update(Task(id, data.subject, data.detail, false)).map {
+      data => taskDao.update(Task(id, data.subject, data.detail, data.isDone.getOrElse(false))).map {
         case success if success => Ok
         case _                  => NotFound
       })
   }
 
+  /**
+   * @return NotFound with unavailable task
+   */
   def delete(id: String) = Action.async { implicit request =>
     taskDao.delete(id).map {
       case success if success => Ok

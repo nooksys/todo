@@ -23,6 +23,7 @@ import org.apache.commons.lang3.RandomStringUtils
 import utils.TaskHelper
 import play.modules.reactivemongo.ReactiveMongoApi
 import models.mongodbdaos.MongoDbTaskDao
+import modules.TaskFixtureDataModule
 
 class TaskDaoSpec extends PlaySpec with OneAppPerSuite {
 
@@ -31,6 +32,7 @@ class TaskDaoSpec extends PlaySpec with OneAppPerSuite {
   implicit val config = ScalaFutures.PatienceConfig(timeout)
 
   implicit override lazy val app = new GuiceApplicationBuilder()
+    .disable[TaskFixtureDataModule]
     // change database for testing
     .configure(Map("mongodb.uri" -> "mongodb://localhost:27017/test-todo")).build()
 
@@ -75,8 +77,7 @@ class TaskDaoSpec extends PlaySpec with OneAppPerSuite {
     Await.ready(col.remove(Json.obj()), timeout)
 
     // create test fixture data
-    Await.ready(col.bulkInsert(false)(List.fill[col.ImplicitlyDocumentProducer](initialDataNumber)(TaskHelper.createRandomTask): _*), timeout)
-
+    Await.ready(dao.bulkInsert(List.fill(initialDataNumber)(TaskHelper.createRandomTask)), timeout)
     block(dao)
   }
 }

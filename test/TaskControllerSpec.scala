@@ -20,6 +20,7 @@ import play.modules.reactivemongo.ReactiveMongoApi
 import utils.TaskHelper
 import scala.concurrent.Future
 import org.mockito.ArgumentMatchers
+import modules.TaskFixtureDataModule
 
 /**
  * This this is not using mock TaskDao instead of the real one for prevent interacting with database
@@ -32,6 +33,7 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
   val task = TaskHelper.createRandomTask.copy(isDone = false)
 
   implicit override lazy val app = new GuiceApplicationBuilder()
+    .disable[TaskFixtureDataModule]
     .overrides(
       bind[ReactiveMongoApi].toInstance(mock[ReactiveMongoApi]), // prevent database connection pool to be create
       bind[TaskDao].toInstance(taskDao)).build()
@@ -73,7 +75,7 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
       when(taskDao.update(any[Task])).thenReturn(Future.successful(true))
     } {
       val result = route(app, FakeRequest(PUT, "/api/tasks/expectedUpdateId")
-        .withJsonBody(Json.obj("subject" -> "test", "detail" -> "detail"))).get
+        .withJsonBody(Json.obj("subject" -> "test", "detail" -> "detail", "isDone" -> true))).get
       status(result) mustBe OK
 
       // verify method invoke with expected delete id
@@ -81,7 +83,7 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
         "expectedUpdateId",
         "test",
         "detail",
-        false))
+        true))
     }
 
     "delete success" in withSetup {
@@ -122,7 +124,7 @@ class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar 
       (response \ "error" \ "subject").toOption.isDefined mustBe true
       (response \ "error" \ "detail").toOption.isDefined mustBe true
     }
-    
+
     "reject update with empty subject or detail" in withSetup() {
       val result = route(app, FakeRequest(PUT, "/api/tasks/fakeId")
         .withJsonBody(Json.obj(

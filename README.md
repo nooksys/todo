@@ -1,6 +1,6 @@
 # Summary
 =================================
-Example Todo Application with MongoDB
+Example Todo Application with MongoDB and Angular2 singlepage style front end ui
 
 # Installation
 =================================
@@ -37,6 +37,8 @@ $ sbt run
 ```
 
 application listen on 0.0.0.0:9000
+
+interaction with Angular ui at root path
 
 # API design
 =================================

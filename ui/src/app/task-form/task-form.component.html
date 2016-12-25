@@ -1,0 +1,22 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g">
+  <form (ngSubmit)="onSubmit()" #taskForm="ngForm">
+    <div class="ui-g-12">
+      <label for="subject">Subject:</label>
+      <input type="text" size="30" [(ngModel)]="task.subject" name="subject" id="subject" required pInputText />
+    </div>
+    <div class="ui-g-12">
+      <p-editor [(ngModel)]="task.detail" name="detail" required></p-editor>
+    </div>
+    <div class="ui-g-12">
+      <label for="subject">Status:</label>
+      <p-dropdown [options]="statuses" name="isDone" [(ngModel)]="task.isDone"></p-dropdown>
+    </div>
+    <div class="ui-g-12">
+      <button pButton type="submit" [disabled]="!taskForm.form.valid" label="Save"></button>
+      <button *ngIf="task.id" pButton (click)="show()" icon="fa-search" label="Show"></button>
+      <button *ngIf="task.id" pButton (click)="confirmDelete()" type="button" icon="fa-trash" label="Delete"></button>
+      <button pButton (click)="list()" type="button" icon="fa-list" label="List"></button>
+    </div>
+  </form>
+</div>
