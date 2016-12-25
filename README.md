@@ -29,6 +29,8 @@ $ cd [ROOT_PROJECT]
 $ sbt -v compile
 $ sbt test
 ```
+if run test failed with jvm cannot allocate memory just try it again (cause the last process consume a lot of memory and did not free the cache, I will try to solve this later)
+
 
 ### run application
 ```
@@ -107,4 +109,14 @@ Request Body Example:
 ###  Delete task by id
 DELETE	/api/tasks/:id
 return 200 OK
+
+### Create upstart service
+create upstart service name todo listen all interfaces on port 9000
+#### service home /usr/share/todo
+
+```
+$ cd [ROOT_PROJECT]
+$ sbt debian:packageBin
+$ sudo dpkg -i target/Todo_1.0-SNAPSHOT_all.deb
+```
 	
