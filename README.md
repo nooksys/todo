@@ -35,6 +35,7 @@ $ sbt test
 $ cd [ROOT_PROJECT]
 $ sbt run
 ```
+run appliation will also create 200 test data records if the database is empty 
 
 application listen on 0.0.0.0:9000
 

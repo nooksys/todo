@@ -23,7 +23,7 @@ import org.mockito.ArgumentMatchers
 import modules.TaskFixtureDataModule
 
 /**
- * This this is not using mock TaskDao instead of the real one for prevent interacting with database
+ * This test using mock TaskDao instead of the real one for prevent interacting with database
  * it just test controller logic only
  */
 class TaskControllerSpec extends PlaySpec with OneAppPerSuite with MockitoSugar {

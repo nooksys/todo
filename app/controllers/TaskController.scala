@@ -75,7 +75,20 @@ class TaskController @Inject() (taskDao: TaskDao)(implicit val messagesApi: Mess
       case _                  => NotFound
     }
   }
-
+  
+  /**
+   * @return example:
+   * {
+   * 	pageNo:1,
+   *  pageSize: 10,
+   *  totalRecords: 200,
+   *  items: [
+   *  	{id:"id", subject:"subject", "detail": "detail", isDone:true},
+   *  	...
+   *  	...
+   *  ]
+   * }
+   */
   def list(pageNo: Int, pageSize: Int) = Action.async {
     taskDao.count.flatMap { count =>
       val page = if (pageNo > 0) pageNo else 1
