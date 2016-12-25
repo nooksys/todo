@@ -116,6 +116,7 @@ create upstart service name todo listen all interfaces on port 9000
 
 ```
 $ cd [ROOT_PROJECT]
+$ sudo apt-get install fakeroot
 $ sbt debian:packageBin
 $ sudo dpkg -i target/Todo_1.0-SNAPSHOT_all.deb
 ```
